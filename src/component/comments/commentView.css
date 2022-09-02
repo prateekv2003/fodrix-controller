@@ -1,0 +1,16 @@
+.comment-key{
+    font-weight: bold;
+    margin-bottom: 2rem;
+    font-size: larger;
+}
+
+.comment-key span{
+    font-weight:400;
+    margin-left: 1rem;
+}
+
+.request-cta.comments-back-btn{
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}

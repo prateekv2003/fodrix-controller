@@ -1,0 +1,15 @@
+.navbar-link{
+    color: rgb(217, 217, 217);
+    text-decoration: none;
+}
+
+.navbar-link:hover,
+.navbar-link:focus,
+.navbar-link:active{
+    color: rgb(255, 255, 255);
+}
+
+.navbar-link-inner{
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}

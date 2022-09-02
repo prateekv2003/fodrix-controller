@@ -5,6 +5,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  background: linear-gradient(90deg, #effaff 0%, #d9e7ff 100%);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
 }
 
 code {
