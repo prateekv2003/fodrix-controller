@@ -4,58 +4,111 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 const UpdatePhotographer = () => {
 
-    
+
+    const [name, setName] = useState();
+    const [email, setEmail] = useState();
+    const [mobile, setMobile] = useState();
+    const [location, setLocation] = useState();
+    const [state, setState] = useState();
+    const [image_url, setImage_url] = useState();
+    const [intro, setIntro] = useState();
+    const [pincode, setPincode] = useState();
+    const [cover1, setCover1] = useState()
+    const [cover2, setCover2] = useState()
+    const [cover3, setCover3] = useState()
+
     const [myOptions, setMyOptions] = useState([])
+    const [searchTerm, setSearchTerm] = useState()
+    const [photographer, setPhotographer] = useState()
+    const [id, setId] = useState()
 
-    const submitFormHandler = (e) => {
+    const submitHandler = (e) => {
         e.preventDefault();
-        const formData = new FormData(e.target)
-        const data = {};
-        for (var [key, value] of formData.entries()) {
-            console.log(key, value);
-            data[`${key}`] = value;
-        }
-        console.log(data);
+        const data = {
+            id: id,
+            name: name,
+            email: email,
+            mobile: mobile,
+            location: location,
+            state: state,
+            pincode: pincode,
+            image_url: image_url,
+            intro: intro,
+            cover1: cover1,
+            cover2: cover2,
+            cover3: cover3
+        };
 
-        fetch("http://api.fodrix.com/photographer/set-photographer-registered")
+        fetch("https://api.fodrix.com/photographer/set-photographer-registered", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "content-type": "application/json",
+            }
+        })
             .then((res) => {
-                console.log(res)
                 if (res.ok) {
                     return res.json()
                 } else {
-                    swal("Something went wrong, see console!", res);
+                    swal("", "Something went wrong!", "error");
                 }
             })
-            .then(data => console.log(data))
-            .catch((err) => {
-                swal("Error", "Check your connection, (or CORS policy)", "error")
+            .then(data => {
+                swal("", "Details updated successfully!", "success");
             })
-
-        e.target.reset();
+            .catch((err) => {
+                swal("Error", "Check your connection", "error");
+            })
     }
 
-    const searchSubmitHandler =(e)=>{
+    const searchSubmitHandler = (e) => {
         e.preventDefault();
-        console.log("put searched val in update form")
-        e.target.reset();
+        if (searchTerm.length != 0) {
+            const arr = searchTerm.split(" ");
+
+            const id = arr[arr.length - 1];
+            setId(id);
+            fetch(`https://api.fodrix.com/photographer/get-photographer-by-id/${id}`)
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json()
+                    } else {
+                        swal("", "Something went wrong!", "error");
+                    }
+                }).then((res) => {
+                    setPhotographer(res);
+                })
+        }
+
     }
 
-    useEffect(()=>{
-
-        console.log("Options Fetched from API")
-
-        // fetch('http://api.fodrix.com/photographer/get-all-photographers-request').then((response) => {
-        fetch('http://dummy.restapiexample.com/api/v1/employees').then((response) => {
+    useEffect(() => {
+        fetch('https://api.fodrix.com/photographer/get-all-photographers-registered').then((response) => {
             return response.json()
         }).then((res) => {
-            console.log(res.data)
-            for (var i = 0; i < res.data.length; i++) {
-                // myOptions.push(res.data[i].name)
-                myOptions.push(res.data[i].employee_name)
+            const arr = [];
+            for (var i = 0; i < res.length; i++) {
+                arr.push(`${res[i].name} - ${res[i].id}`)
             }
-            setMyOptions(myOptions)
+            setMyOptions(arr)
         })
     }, [])
+
+    useEffect(() => {
+        if (photographer) {
+            setName(photographer.name);
+            setEmail(photographer.email);
+            setMobile(photographer.mobile);
+            setLocation(photographer.location)
+            setState(photographer.state)
+            setImage_url(photographer.image_url)
+            setIntro(photographer.intro)
+            setPincode(photographer.pincode)
+            setCover1(photographer.cover1)
+            setCover2(photographer.cover2)
+            setCover3(photographer.cover3)
+        }
+    }, [photographer])
 
     return (
         <>
@@ -65,9 +118,9 @@ const UpdatePhotographer = () => {
                         <div className="col-75 search-bar-inner">
                             <Autocomplete
                                 style={{ marginTop: 7.5 }}
-                                freeSolo
-                                autoComplete
-                                autoHighlight
+                                // freeSolo
+                                // autoHighlight
+                                // autoComplete
                                 options={myOptions}
                                 renderInput={(params) => (
                                     <TextField {...params}
@@ -76,6 +129,16 @@ const UpdatePhotographer = () => {
                                         label="Search Box"
                                     />
                                 )}
+                                // value={searchTerm}
+                                onChange={(e) => {
+                                    setSearchTerm(e.target.textContent)
+                                }}
+
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter') {
+                                        setSearchTerm(e.target.value);
+                                    }
+                                }}
                             />
                         </div>
                         <div className="col-25 search-btn">
@@ -85,14 +148,14 @@ const UpdatePhotographer = () => {
                 </form>
             </div>
             <div class="form-container">
-                <form onSubmit={submitFormHandler}>
+                <form onSubmit={submitHandler}>
                     <div className="form-heading">Update Photographer</div>
                     <div class="form-child-row">
                         <div class="col-25">
                             <label htmlFor="name">Name</label>
                         </div>
                         <div class="col-75">
-                            <input required type="text" id="name" name="name" placeholder="Photographer's name.." />
+                            <input value={name} onChange={(e) => { setName(e.target.value) }} required type="text" id="name" name="name" placeholder="Photographer's name.." />
                         </div>
                     </div>
 
@@ -101,7 +164,7 @@ const UpdatePhotographer = () => {
                             <label htmlFor="email">Email</label>
                         </div>
                         <div class="col-75">
-                            <input required type="email" id="email" name="email" placeholder="Photographer's email.." />
+                            <input value={email} required onChange={(e) => { setEmail(e.target.value) }} type="email" id="email" name="email" placeholder="Photographer's email.." />
                         </div>
                     </div>
 
@@ -110,7 +173,7 @@ const UpdatePhotographer = () => {
                             <label htmlFor="mobile">Mobile</label>
                         </div>
                         <div class="col-75">
-                            <input required type="text" id="mobile" name="mobile" placeholder="Phone no." />
+                            <input value={mobile} required onChange={(e) => { setMobile(e.target.value) }} type="text" id="mobile" name="mobile" placeholder="Phone no." />
                         </div>
                     </div>
 
@@ -119,7 +182,7 @@ const UpdatePhotographer = () => {
                             <label htmlFor="country">Country</label>
                         </div>
                         <div class="col-75">
-                            <select required id="country" name="country">
+                            <select value={location} required id="country" name="location" onChange={(e) => { setLocation(e.target.value) }} >
                                 <option value="">Choose City</option>
                                 <option value="Agartala"> Agartala </option>
                                 <option value="Agra"> Agra </option>
@@ -230,7 +293,7 @@ const UpdatePhotographer = () => {
                             <label htmlFor="state">State</label>
                         </div>
                         <div class="col-75">
-                            <input required type="text" id="state" name="state" placeholder="State" />
+                            <input required value={state} onChange={(e) => { setState(e.target.value) }} type="text" id="state" name="state" placeholder="State" />
                         </div>
                     </div>
 
@@ -240,7 +303,7 @@ const UpdatePhotographer = () => {
                             <label htmlFor="pincode">Pin code</label>
                         </div>
                         <div class="col-75">
-                            <input required type="text" id="pincode" name="pincode" placeholder="Pin code" />
+                            <input required value={pincode} onChange={(e) => { setPincode(e.target.value) }} type="number" id="pincode" name="pincode" placeholder="Pin code" />
                         </div>
                     </div>
 
@@ -249,7 +312,34 @@ const UpdatePhotographer = () => {
                             <label htmlFor="image_url">Image URL</label>
                         </div>
                         <div class="col-75">
-                            <input required type="text" id="image_url" name="image_url" placeholder="Image URL" />
+                            <input required value={image_url} onChange={(e) => { setImage_url(e.target.value) }} type="text" id="image_url" name="image_url" placeholder="Image URL" />
+                        </div>
+                    </div>
+
+                    <div class="form-child-row">
+                        <div class="col-25">
+                            <label htmlFor="cover1">Cover-1</label>
+                        </div>
+                        <div class="col-75">
+                            <input required value={cover1} onChange={(e) => { setCover1(e.target.value) }} type="text" id="cover1" name="cover1" placeholder="Cover image link...." />
+                        </div>
+                    </div>
+
+                    <div class="form-child-row">
+                        <div class="col-25">
+                            <label htmlFor="cover2">Cover-2</label>
+                        </div>
+                        <div class="col-75">
+                            <input required value={cover2} onChange={(e) => { setCover2(e.target.value) }} type="text" id="cover2" name="cover2" placeholder="Cover image link...." />
+                        </div>
+                    </div>
+
+                    <div class="form-child-row">
+                        <div class="col-25">
+                            <label htmlFor="cover3">Cover-3</label>
+                        </div>
+                        <div class="col-75">
+                            <input required value={cover3} onChange={(e) => { setCover3(e.target.value) }} type="text" id="cover3" name="cover3" placeholder="Cover image link...." />
                         </div>
                     </div>
 
@@ -258,7 +348,7 @@ const UpdatePhotographer = () => {
                             <label htmlFor="intro">Intro</label>
                         </div>
                         <div class="col-75">
-                            <textarea required type="text" id="intro" name="intro" placeholder="Introduction of photographer...." />
+                            <textarea required value={intro} onChange={(e) => { setIntro(e.target.value) }} type="text" id="intro" name="intro" placeholder="Introduction of photographer...." />
                         </div>
                     </div>
 

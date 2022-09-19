@@ -9,9 +9,13 @@ import ShowCity from './component/city/ShowCity';
 import UpdatePhotographer from './component/photographer/UpdatePhotographer';
 import ShowPhotographer from './component/photographer/ShowPhotographer';
 import Comments from './component/comments/Comments'
+import CommentView from './component/comments/CommentView';
+import PReq from './component/photographer_req/PReq'
+import PReqView from './component/photographer_req/PReqView'
 import Navbar from './component/navbar/Navbar'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import CommentView from './component/comments/CommentView';
+import AddImage from './component/portfolio/AddImage';
+
 const App = () => {
   return (
     <>
@@ -26,8 +30,11 @@ const App = () => {
             <Route path="/photographer-add" element={<AddPhotographer />} />
             <Route path="/photographer-show" element={<ShowPhotographer />} />
             <Route path="/photographer-update" element={<UpdatePhotographer />} />
+            <Route path="/add-image" element={<AddImage />} />
             <Route path="/comments" element={<Comments />} />
             <Route path="/comment-view" element={<CommentView />} />
+            <Route path="/preq" element={<PReq />} />
+            <Route path="/preq-view" element={<PReqView />} />
           </Routes>
         </main>
       </BrowserRouter>

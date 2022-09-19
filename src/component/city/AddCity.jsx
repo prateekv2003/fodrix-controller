@@ -1,25 +1,54 @@
-import React from 'react'
+import React, { useState, useEffect} from 'react'
 import swal from 'sweetalert';
 const AddCity = () => {
-  const submitHandler = (e) => {
+
+  
+    const [place, setPlace] = useState();
+    const [spot1, setSpot1] = useState();
+    const [spot2, setSpot2] = useState();
+    const [spot3, setSpot3] = useState();
+    const [spot4, setSpot4] = useState();
+    const [spot5, setSpot5] = useState();
+    const [spot6, setSpot6] = useState();
+    const [map_link, setMap_link] = useState();
+    const [image_url, setImage_url] = useState();
+    const [about, setAbout] = useState();
+
+    const submitHandler = (e) => {
     e.preventDefault();
-    const form_data = new FormData(e.target);
-    let data = {}
-    for (let [key, value] of form_data) {
-      data[key] = value;
+    let data = {
+      place:place,
+      spot1:spot1,
+      spot2:spot2,
+      spot3:spot3,
+      spot4:spot4,
+      spot5:spot5,
+      spot6:spot6,
+      map_link:map_link,
+      image_url:image_url,
+      about:about
     }
+    // for (let [key, value] of form_data) {
+    //   data[key] = value;
+    // }
 
 
-    fetch("http://api.fodrix.com/photographer/set-photographer-registered")
+    fetch("https://api.fodrix.com/city/set-city-details" ,{
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "content-type": "application/json",
+      }})
       .then((res) => {
-        console.log(res)
         if (res.ok) {
           return res.json()
         } else {
-          swal("Something went wrong, see console!", res);
+          swal("", "Something went wrong, see console!", "error");  
         }
       })
-      .then(data => console.log(data))
+      .then(data =>{
+        swal("", "Details submitted successfully!", "success");
+      })
       .catch((err) => {
         swal("Error", "Check your connection, (or CORS policy)", "error")
       })
@@ -34,7 +63,7 @@ const AddCity = () => {
               <label htmlFor="place">Place</label>
             </div>
             <div class="col-75">
-              <input required type="text" id="place" name="place" placeholder="City name" />
+              <input required onChange={(e)=>{setPlace(e.target.value)}} type="text" id="place" name="place" placeholder="City name" />
             </div>
           </div>
           {/* Spot-1 */}
@@ -43,7 +72,7 @@ const AddCity = () => {
               <label htmlFor="spot1">Spot-1</label>
             </div>
             <div class="col-75">
-              <input required type="text" id="spot1" name="spot1" placeholder="Spot-1" />
+              <input required onChange={(e)=>{setSpot1(e.target.value)}} type="text" id="spot1" name="spot1" placeholder="Spot-1" />
             </div>
           </div>
           {/* Spot-2 */}
@@ -52,7 +81,7 @@ const AddCity = () => {
               <label htmlFor="spot2">Spot-2</label>
             </div>
             <div class="col-75">
-              <input required type="text" id="spot2" name="spot2" placeholder="Spot-2" />
+              <input required onChange={(e)=>{setSpot2(e.target.value)}} type="text" id="spot2" name="spot2" placeholder="Spot-2" />
             </div>
           </div>
           {/* Spot-3 */}
@@ -61,7 +90,7 @@ const AddCity = () => {
               <label htmlFor="spot3">Spot-3</label>
             </div>
             <div class="col-75">
-              <input required type="text" id="spot3" name="spot3" placeholder="Spot-3" />
+              <input required onChange={(e)=>{setSpot3(e.target.value)}} type="text" id="spot3" name="spot3" placeholder="Spot-3" />
             </div>
           </div>
           {/* Spot-4 */}
@@ -70,7 +99,7 @@ const AddCity = () => {
               <label htmlFor="spot4">Spot-4</label>
             </div>
             <div class="col-75">
-              <input required type="text" id="spot4" name="spot4" placeholder="Spot-4" />
+              <input required onChange={(e)=>{setSpot4(e.target.value)}} type="text" id="spot4" name="spot4" placeholder="Spot-4" />
             </div>
           </div>
           {/* Spot-5 */}
@@ -79,7 +108,7 @@ const AddCity = () => {
               <label htmlFor="spot4">Spot-5</label>
             </div>
             <div class="col-75">
-              <input required type="text" id="spot5" name="spot5" placeholder="Spot-5" />
+              <input required onChange={(e)=>{setSpot5(e.target.value)}} type="text" id="spot5" name="spot5" placeholder="Spot-5" />
             </div>
           </div>
           {/* Spot-6 */}
@@ -88,7 +117,7 @@ const AddCity = () => {
               <label htmlFor="spot6">Spot-6</label>
             </div>
             <div class="col-75">
-              <input required type="text" id="spot6" name="spot6" placeholder="Spot-6" />
+              <input required onChange={(e)=>{setSpot6(e.target.value)}} type="text" id="spot6" name="spot6" placeholder="Spot-6" />
             </div>
           </div>
 
@@ -97,7 +126,7 @@ const AddCity = () => {
               <label htmlFor="map_link">Map Link</label>
             </div>
             <div class="col-75">
-              <input required type="text" id="map_link" name="map_link" placeholder="Map link" />
+              <input required onChange={(e)=>{setMap_link(e.target.value)}} type="text" id="map_link" name="map_link" placeholder="Map link" />
             </div>
           </div>
 
@@ -106,7 +135,7 @@ const AddCity = () => {
               <label htmlFor="image_url">Image URL</label>
             </div>
             <div class="col-75">
-              <input required type="text" id="image_url" name="image_url" placeholder="Image URL" />
+              <input required onChange={(e)=>{setImage_url(e.target.value)}} type="text" id="image_url" name="image_url" placeholder="Image URL" />
             </div>
           </div>
 
@@ -115,7 +144,7 @@ const AddCity = () => {
               <label htmlFor="about">About</label>
             </div>
             <div class="col-75">
-              <textarea required type="text" id="about" name="about" placeholder="About the city" />
+              <textarea required onChange={(e)=>{setAbout(e.target.value)}} type="text" id="about" name="about" placeholder="About the city" />
             </div>
           </div>
 

@@ -6,17 +6,13 @@ const ShowPhotographer = () => {
 
     useEffect(() => {
 
-        console.log("Options Fetched from API")
-
-        // fetch('http://api.fodrix.com/photographer/get-all-photographers-request').then((response) => {
-        fetch('http://dummy.restapiexample.com/api/v1/employees').then((response) => {
+        fetch('https://api.fodrix.com/photographer/get-all-photographers-registered').then((response) => {
+        // fetch('https://dummy.restapiexample.com/api/v1/employees').then((response) => {
             return response.json()
         }).then((res) => {
-            setPhotographer(res.data)
+            setPhotographer(res)
         })
     }, [])
-
-    console.table(photographer);
 
     return (
         <>
@@ -30,18 +26,22 @@ const ShowPhotographer = () => {
                                 : <table>
                                     <thead>
                                         <tr>
+                                            <th>ID</th>
                                             <th>Name</th>
-                                            <th>Age</th>
-                                            <th>Salary</th>
+                                            <th>Email</th>
+                                            <th>Mobile</th>
+                                            <th>Location</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {photographer.map(item => {
                                             return (
                                                 <tr key={item.id}>
-                                                    <td>{item.employee_name}</td>
-                                                    <td>{item.employee_age}</td>
-                                                    <td>{item.employee_salary}</td>
+                                                    <td>{item.id}</td>
+                                                    <td>{item.name}</td>
+                                                    <td>{item.email}</td>
+                                                    <td>{item.mobile}</td>
+                                                    <td>{item.location}</td>
                                                     {/* <td>{item.email}</td> */}
                                                 </tr>
                                             );

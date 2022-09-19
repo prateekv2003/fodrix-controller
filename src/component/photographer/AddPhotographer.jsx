@@ -1,33 +1,59 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import swal from 'sweetalert'
 import './addPhotographer.css'
 const AddPhotographer = () => {
 
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [mobile, setMobile] = useState();
+  const [location, setLocation] = useState();
+  const [state, setState] = useState();
+  const [image_url, setImage_url] = useState();
+  const [intro, setIntro] = useState();
+  const [pincode, setPincode] = useState();
+  const [cover1, setCover1] = useState()
+  const [cover2, setCover2] = useState()
+  const [cover3, setCover3] = useState()
+
   const submitHandler = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target)
-    const data = {};
-    for (var [key, value] of formData.entries()) { 
-      console.log(key, value);
-      data[`${key}`] = value;
-     }
-     console.log(data);
+    const data = {
+      name: name,
+      email: email,
+      mobile: mobile,
+      location: location,
+      state: state,
+      pincode: pincode,
+      image_url: image_url,
+      intro: intro,
+      cover1: cover1,
+      cover2: cover2,
+      cover3: cover3
+    };
 
-     fetch("http://api.fodrix.com/photographer/set-photographer-registered")
-     .then((res)=>{
-       console.log(res)
-       if(res.ok){
-         return res.json()
-       }else{
-         swal("Something went wrong, see console!", res);
-       }
-     })
-     .then(data=>console.log(data))
-     .catch((err)=>{
-       swal("Error", "Check your connection, (or CORS policy)", "error")
-     })
+    fetch("https://api.fodrix.com/photographer/set-photographer-registered", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "content-type": "application/json",
+      }
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json()
+        } else {
+          swal("", "Something went wrong, see console!", "error");
+        }
+      })
+      .then(data => {
+        swal("", "Details submitted successfully!", "success");
+      })
+      .catch((err) => {
+        swal("Error", "Check your connection", "error");
+      })
 
-     e.target.reset();
+    //  e.target.reset();
   }
   return (
     <>
@@ -39,7 +65,7 @@ const AddPhotographer = () => {
               <label htmlFor="name">Name</label>
             </div>
             <div class="col-75">
-              <input required type="text" id="name" name="name" placeholder="Photographer's name.." />
+              <input onChange={(e) => { setName(e.target.value) }} required type="text" id="name" name="name" placeholder="Photographer's name.." />
             </div>
           </div>
 
@@ -48,7 +74,7 @@ const AddPhotographer = () => {
               <label htmlFor="email">Email</label>
             </div>
             <div class="col-75">
-              <input required type="email" id="email" name="email" placeholder="Photographer's email.." />
+              <input required onChange={(e) => { setEmail(e.target.value) }} type="email" id="email" name="email" placeholder="Photographer's email.." />
             </div>
           </div>
 
@@ -57,7 +83,7 @@ const AddPhotographer = () => {
               <label htmlFor="mobile">Mobile</label>
             </div>
             <div class="col-75">
-              <input required type="text" id="mobile" name="mobile" placeholder="Phone no." />
+              <input required onChange={(e) => { setMobile(e.target.value) }} type="text" id="mobile" name="mobile" placeholder="Phone no." />
             </div>
           </div>
 
@@ -66,7 +92,7 @@ const AddPhotographer = () => {
               <label htmlFor="country">Country</label>
             </div>
             <div class="col-75">
-              <select required id="country" name="country">
+              <select required id="country" name="location" onChange={(e) => { setLocation(e.target.value) }} >
                 <option value="">Choose City</option>
                 <option value="Agartala"> Agartala </option>
                 <option value="Agra"> Agra </option>
@@ -177,7 +203,7 @@ const AddPhotographer = () => {
               <label htmlFor="state">State</label>
             </div>
             <div class="col-75">
-              <input required type="text" id="state" name="state" placeholder="State" />
+              <input required onChange={(e) => { setState(e.target.value) }} type="text" id="state" name="state" placeholder="State" />
             </div>
           </div>
 
@@ -187,7 +213,7 @@ const AddPhotographer = () => {
               <label htmlFor="pincode">Pin code</label>
             </div>
             <div class="col-75">
-              <input required type="text" id="pincode" name="pincode" placeholder="Pin code" />
+              <input required onChange={(e) => { setPincode(e.target.value) }} type="number" id="pincode" name="pincode" placeholder="Pin code" />
             </div>
           </div>
 
@@ -196,16 +222,43 @@ const AddPhotographer = () => {
               <label htmlFor="image_url">Image URL</label>
             </div>
             <div class="col-75">
-              <input required type="text" id="image_url" name="image_url" placeholder="Image URL" />
+              <input required onChange={(e) => { setImage_url(e.target.value) }} type="text" id="image_url" name="image_url" placeholder="Image URL" />
             </div>
           </div>
 
           <div class="form-child-row">
             <div class="col-25">
+              <label htmlFor="cover1">Cover-1</label>
+            </div>
+            <div class="col-75">
+              <input required onChange={(e) => { setCover1(e.target.value) }} type="text" id="cover1" name="cover1" placeholder="Cover image link...." />
+            </div>
+          </div>
+
+          <div class="form-child-row">
+            <div class="col-25">
+              <label htmlFor="cover2">Cover-2</label>
+            </div>
+            <div class="col-75">
+              <input required onChange={(e) => { setCover2(e.target.value) }} type="text" id="cover2" name="cover2" placeholder="Cover image link...." />
+            </div>
+          </div>
+
+          <div class="form-child-row">
+            <div class="col-25">
+              <label htmlFor="cover3">Cover-3</label>
+            </div>
+            <div class="col-75">
+              <input required onChange={(e) => { setCover3(e.target.value) }} type="text" id="cover3" name="cover3" placeholder="Cover image link...." />
+            </div>
+          </div>
+ 
+          <div class="form-child-row">
+            <div class="col-25">
               <label htmlFor="intro">Intro</label>
             </div>
             <div class="col-75">
-              <textarea required type="text" id="intro" name="intro" placeholder="Introduction of photographer...." />
+              <textarea required onChange={(e) => { setIntro(e.target.value) }} type="text" id="intro" name="intro" placeholder="Introduction of photographer...." />
             </div>
           </div>
 

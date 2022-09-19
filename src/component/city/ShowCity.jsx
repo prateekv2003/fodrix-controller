@@ -5,14 +5,11 @@ const ShowCity = () => {
     const [city, setCity] = useState(null)
 
     useEffect(() => {
-
-        console.log("Options Fetched from API")
-
-        // fetch('http://api.fodrix.com/photographer/get-all-photographers-request').then((response) => {
-        fetch('http://dummy.restapiexample.com/api/v1/employees').then((response) => {
+        fetch('https://api.fodrix.com/city/get-all-city-details').then((response) => {
             return response.json()
         }).then((res) => {
             setCity(res.data)
+            console.log(res.data)
         })
     }, [])
 
@@ -28,19 +25,34 @@ const ShowCity = () => {
                                 : <table>
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Age</th>
-                                            <th>Salary</th>
+                                            <th>ID</th>
+                                            <th>Place</th>
+                                            <th>Spot1</th>
+                                            <th>Spot2</th>
+                                            <th>Spot3</th>
+                                            <th>Spot4</th>
+                                            <th>Spot5</th>
+                                            <th>Spot6</th>
+                                            <th>Image URL</th>
+                                            <th>Map Link</th>
+                                            <th>About</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {city.map(item => {
                                             return (
                                                 <tr key={item.id}>
-                                                    <td>{item.employee_name}</td>
-                                                    <td>{item.employee_age}</td>
-                                                    <td>{item.employee_salary}</td>
-                                                    {/* <td>{item.email}</td> */}
+                                                    <td>{item.id}</td>
+                                                    <td>{item.place}</td>
+                                                    <td>{item.spot1}</td>
+                                                    <td>{item.spot2}</td>
+                                                    <td>{item.spot3}</td>
+                                                    <td>{item.spot4}</td>
+                                                    <td>{item.spot5}</td>
+                                                    <td>{item.spot6}</td>
+                                                    <td style={{whiteSpace:"nowrap"}}>{item.image_url}</td>
+                                                    <td style={{whiteSpace:"nowrap"}}>{item.map_link}</td>
+                                                    <td style={{whiteSpace:"nowrap"}}>{item.about}</td>
                                                 </tr>
                                             );
                                         })}

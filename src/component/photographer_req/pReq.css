@@ -1,0 +1,48 @@
+.request-container{
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 1rem;
+}
+.request-container p{
+    margin: 0;
+}
+
+.request-container .request{
+    /* background-color: rgb(213, 235, 255); */
+    border-bottom: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.request-container .request:last-child{
+    border-bottom: none;
+}
+
+.request-cta{
+    display: flex;
+    gap: 0.5rem;
+}
+
+.request-cta a{
+    text-decoration: none;
+    color: #fff;
+    padding: 0.5rem 1.5rem;
+    background-color: rgb(22 150 2 / 70%);
+    border-radius: 0.4rem;
+}
+
+.request-cta a:hover{
+    background-color: rgba(20, 134, 0, 0.514);
+    color: #fff;
+}
+
+.request-cta a:nth-child(2){
+    background-color: rgba(185, 0, 0, 0.988);
+}
+
+.request-cta a:nth-child(2):hover{
+    background-color: rgba(134, 0, 0, 0.514);
+}
